@@ -22,11 +22,16 @@
 
 package com.macleod2486.filemanager
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.macleod2486.filemanager.fragments.Main
@@ -67,5 +72,30 @@ class MainActivity : AppCompatActivity()
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, menuItems)
         drawerOptions.setAdapter(adapter)
 
+    }
+
+    override fun onStart()
+    {
+        super.onStart()
+
+        if(Build.VERSION.SDK_INT >= 23)
+        {
+            val writeExternalPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            val readExternalPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            val mediaLocationPermission =  ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_MEDIA_LOCATION) != PackageManager.PERMISSION_GRANTED
+
+            if (writeExternalPermission || readExternalPermission || mediaLocationPermission)
+            {
+                val arrayOfPermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_MEDIA_LOCATION)
+                this.requestPermissions(arrayOfPermissions, 0)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        Log.i("MainActivity", "OnRequestPermissionsCallback "+permissions.size)
     }
 }
