@@ -37,6 +37,6 @@ class MainActivity : AppCompatActivity()
 
         val mainFragment = Main()
 
-        fragManager.beginTransaction().replace(R.id.main, mainFragment).commit()
+        fragManager.beginTransaction().replace(R.id.container, mainFragment).commit()
     }
 }
