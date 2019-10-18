@@ -24,19 +24,38 @@ package com.macleod2486.filemanager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import com.macleod2486.filemanager.fragments.Main
 
 class MainActivity : AppCompatActivity()
 {
+
+    override fun onBackPressed()
+    {
+        if(supportFragmentManager.backStackEntryCount > 0)
+        {
+            supportFragmentManager.popBackStack()
+        }
+        else
+        {
+            super.onBackPressed()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragManager = supportFragmentManager
-
         val mainFragment = Main()
 
-        fragManager.beginTransaction().replace(R.id.container, mainFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, mainFragment).commit()
+
+        var drawer = findViewById<ListView>(R.id.optionList)
+        val menuItems = resources.getStringArray(R.array.menuItems)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, menuItems)
+        drawer.setAdapter(adapter)
+
     }
 }
