@@ -3,7 +3,7 @@
  *   File Manager
  *    A application to help organize your files on your device.
  *
- *    Copyright (C) 2018  Manuel Gonzales Jr.
+ *    Copyright (C) 2019  Manuel Gonzales Jr.
  *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
