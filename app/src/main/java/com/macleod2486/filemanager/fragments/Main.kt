@@ -20,23 +20,22 @@
  *
  */
 
-package com.macleod2486.filemanager
+package com.macleod2486.filemanager.fragments
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.macleod2486.filemanager.fragments.Main
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.macleod2486.filemanager.R
 
-class MainActivity : AppCompatActivity()
+class Main : Fragment()
 {
-    override fun onCreate(savedInstanceState: Bundle?)
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.main_fragment, container, false)
 
-        val fragManager = supportFragmentManager
-
-        val mainFragment = Main()
-
-        fragManager.beginTransaction().replace(R.id.main, mainFragment).commit()
+        return view
     }
 }
