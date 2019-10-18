@@ -24,16 +24,24 @@ package com.macleod2486.filemanager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.macleod2486.filemanager.fragments.Main
 
 class MainActivity : AppCompatActivity()
 {
+    lateinit var drawer: DrawerLayout
 
     override fun onBackPressed()
     {
-        if(supportFragmentManager.backStackEntryCount > 0)
+        if(drawer.isDrawerOpen(GravityCompat.START))
+        {
+            drawer.closeDrawer(Gravity.LEFT)
+        }
+        else if(supportFragmentManager.backStackEntryCount > 0)
         {
             supportFragmentManager.popBackStack()
         }
@@ -52,10 +60,12 @@ class MainActivity : AppCompatActivity()
 
         supportFragmentManager.beginTransaction().replace(R.id.container, mainFragment).commit()
 
-        var drawer = findViewById<ListView>(R.id.optionList)
+        drawer = findViewById(R.id.drawer)
+
+        val drawerOptions = findViewById<ListView>(R.id.optionList)
         val menuItems = resources.getStringArray(R.array.menuItems)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, menuItems)
-        drawer.setAdapter(adapter)
+        drawerOptions.setAdapter(adapter)
 
     }
 }
