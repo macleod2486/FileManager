@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity()
     {
         if(drawer.isDrawerOpen(GravityCompat.START))
         {
-            drawer.closeDrawer(Gravity.LEFT)
+            drawer.closeDrawer(GravityCompat.START)
         }
         else if(supportFragmentManager.backStackEntryCount > 0)
         {
@@ -82,11 +82,10 @@ class MainActivity : AppCompatActivity()
         {
             val writeExternalPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
             val readExternalPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            val mediaLocationPermission =  ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_MEDIA_LOCATION) != PackageManager.PERMISSION_GRANTED
 
-            if (writeExternalPermission || readExternalPermission || mediaLocationPermission)
+            if (writeExternalPermission || readExternalPermission)
             {
-                val arrayOfPermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_MEDIA_LOCATION)
+                val arrayOfPermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                 this.requestPermissions(arrayOfPermissions, 0)
             }
         }
