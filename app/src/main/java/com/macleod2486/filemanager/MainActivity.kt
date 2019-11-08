@@ -28,7 +28,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.core.content.ContextCompat
@@ -38,7 +37,7 @@ import com.macleod2486.filemanager.fragments.Main
 
 class MainActivity : AppCompatActivity()
 {
-    lateinit var drawer: DrawerLayout
+    private lateinit var drawer: DrawerLayout
 
     override fun onBackPressed()
     {
