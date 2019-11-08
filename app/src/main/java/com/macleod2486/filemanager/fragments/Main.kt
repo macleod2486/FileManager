@@ -23,19 +23,66 @@
 package com.macleod2486.filemanager.fragments
 
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.GridLayout
 import androidx.fragment.app.Fragment
 import com.macleod2486.filemanager.R
 
 class Main : Fragment()
 {
+    private lateinit var gridLayout:GridLayout
+
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.main_fragment, container, false)
 
+        gridLayout = view.findViewById(R.id.iconLayout)
+
         return view
+    }
+
+    override fun onStart()
+    {
+        super.onStart()
+
+        var button: Button
+
+        var listOfFiles = Environment.getRootDirectory().listFiles()
+
+        var x = 0
+        var y = 0
+
+        for(file in listOfFiles)
+        {
+            button = Button(activity?.applicationContext)
+            button.setText(file.absolutePath)
+
+            val params = GridLayout.LayoutParams()
+
+            if(x < 2)
+            {
+                params.rowSpec = GridLayout.spec(y)
+                params.columnSpec = GridLayout.spec(x)
+                x++
+            }
+            else
+            {
+                x = 0
+                y++
+                params.rowSpec = GridLayout.spec(y)
+                params.columnSpec = GridLayout.spec(x)
+                x++
+            }
+
+            button.layoutParams = params
+
+            gridLayout.addView(button)
+        }
+
     }
 }

@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="It works">
+        android:id="@+id/iconLayout">
 
-    </TextView>
+    </GridLayout>
 
 </RelativeLayout>
