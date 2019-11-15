@@ -60,7 +60,7 @@ class Main : Fragment()
         for(file in listOfFiles)
         {
             button = Button(activity?.applicationContext)
-            button.setText(file.absolutePath)
+            button.setText(file.name)
 
             val params = GridLayout.LayoutParams()
 
