@@ -24,6 +24,7 @@ package com.macleod2486.filemanager.fragments
 
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,10 +32,12 @@ import android.widget.Button
 import android.widget.GridLayout
 import androidx.fragment.app.Fragment
 import com.macleod2486.filemanager.R
+import java.io.File
 
 class Main : Fragment()
 {
     private lateinit var gridLayout:GridLayout
+    private var currentRoot = Environment.getRootDirectory().absolutePath
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -50,39 +53,62 @@ class Main : Fragment()
     {
         super.onStart()
 
+        updateView()
+    }
+
+    private fun updateView()
+    {
         var button: Button
 
-        var listOfFiles = Environment.getRootDirectory().listFiles()
-
-        var x = 0
-        var y = 0
-
-        for(file in listOfFiles)
+        if(File(currentRoot).isDirectory)
         {
-            button = Button(activity?.applicationContext)
-            button.setText(file.name)
+            val listOfFiles = File(currentRoot).listFiles()
 
-            val params = GridLayout.LayoutParams()
+            var x = 0
+            var y = 0
 
-            if(x < 2)
+            for(file in listOfFiles)
             {
-                params.rowSpec = GridLayout.spec(y)
-                params.columnSpec = GridLayout.spec(x)
-                x++
-            }
-            else
-            {
-                x = 0
-                y++
-                params.rowSpec = GridLayout.spec(y)
-                params.columnSpec = GridLayout.spec(x)
-                x++
-            }
+                button = Button(activity?.applicationContext)
+                button.setText(file.name)
+                button.width = 300
 
-            button.layoutParams = params
+                button.setOnClickListener{
+                    val button: Button? = it as Button?
 
-            gridLayout.addView(button)
+                    val path = currentRoot+"/"+button!!.text
+                    if(File(path).isDirectory)
+                    {
+                        currentRoot += "/"+button.text
+                        updateView()
+                    }
+                    else
+                    {
+                        Log.i("Main", "Not a directory!")
+                    }
+                }
+
+                val params = GridLayout.LayoutParams()
+
+                if(x < 2)
+                {
+                    params.rowSpec = GridLayout.spec(y)
+                    params.columnSpec = GridLayout.spec(x)
+                    x++
+                }
+                else
+                {
+                    x = 0
+                    y++
+                    params.rowSpec = GridLayout.spec(y)
+                    params.columnSpec = GridLayout.spec(x)
+                    x++
+                }
+
+                button.layoutParams = params
+
+                gridLayout.addView(button)
+            }
         }
-
     }
 }
