@@ -24,12 +24,12 @@ package com.macleod2486.filemanager.fragments
 
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.macleod2486.filemanager.R
 import java.io.File
@@ -60,6 +60,8 @@ class Main : Fragment()
     {
         var button: Button
 
+        gridLayout.removeAllViews()
+
         if(File(currentRoot).isDirectory)
         {
             val listOfFiles = File(currentRoot).listFiles()
@@ -67,11 +69,16 @@ class Main : Fragment()
             var x = 0
             var y = 0
 
-            for(file in listOfFiles)
+            for(file in listOfFiles!!)
             {
                 button = Button(activity?.applicationContext)
                 button.setText(file.name)
                 button.width = 300
+
+                if(file.isDirectory)
+                    button.setBackgroundColor(resources.getColor(android.R.color.holo_blue_dark))
+                else
+                    button.setBackgroundColor(resources.getColor(android.R.color.holo_red_dark))
 
                 button.setOnClickListener{
                     val button: Button? = it as Button?
@@ -84,11 +91,15 @@ class Main : Fragment()
                     }
                     else
                     {
-                        Log.i("Main", "Not a directory!")
+                        Toast.makeText(this.context, "Not a directory!", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 val params = GridLayout.LayoutParams()
+                params.topMargin = 20
+                params.bottomMargin = 20
+                params.rightMargin = 20
+                params.leftMargin = 20
 
                 if(x < 2)
                 {
