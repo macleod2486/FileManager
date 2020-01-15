@@ -20,7 +20,7 @@
  *
  */
 
-package com.macleod2486.filemanager.fragments
+package com.macleod2486.filemanager.views
 
 import android.os.Bundle
 import android.os.Environment

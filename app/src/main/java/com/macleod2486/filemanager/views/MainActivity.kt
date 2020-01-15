@@ -20,24 +20,24 @@
  *
  */
 
-package com.macleod2486.filemanager
+package com.macleod2486.filemanager.views
 
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.macleod2486.filemanager.fragments.Main
+import com.macleod2486.filemanager.R
 
 class MainActivity : AppCompatActivity()
 {
     private lateinit var drawer: DrawerLayout
+    private val REQUEST_PERMISSION_CODE = 0
 
     override fun onBackPressed()
     {
@@ -60,17 +60,6 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mainFragment = Main()
-
-        supportFragmentManager.beginTransaction().replace(R.id.container, mainFragment).commit()
-
-        drawer = findViewById(R.id.drawer)
-
-        val drawerOptions = findViewById<ListView>(R.id.optionList)
-        val menuItems = resources.getStringArray(R.array.menuItems)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, menuItems)
-        drawerOptions.setAdapter(adapter)
-
     }
 
     override fun onStart()
@@ -85,7 +74,11 @@ class MainActivity : AppCompatActivity()
             if (writeExternalPermission || readExternalPermission)
             {
                 val arrayOfPermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                this.requestPermissions(arrayOfPermissions, 0)
+                this.requestPermissions(arrayOfPermissions, REQUEST_PERMISSION_CODE)
+            }
+            else
+            {
+                setupMainView()
             }
         }
     }
@@ -94,6 +87,30 @@ class MainActivity : AppCompatActivity()
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        Log.i("MainActivity", "OnRequestPermissionsCallback "+permissions.size)
+        if(requestCode == REQUEST_PERMISSION_CODE)
+        {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            {
+                setupMainView()
+            }
+            else
+            {
+                finish()
+            }
+        }
+    }
+
+    private fun setupMainView()
+    {
+        val mainFragment = Main()
+
+        supportFragmentManager.beginTransaction().replace(R.id.container, mainFragment).commit()
+
+        drawer = findViewById(R.id.drawer)
+
+        val drawerOptions = findViewById<ListView>(R.id.optionList)
+        val menuItems = resources.getStringArray(R.array.menuItems)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, menuItems)
+        drawerOptions.setAdapter(adapter)
     }
 }
