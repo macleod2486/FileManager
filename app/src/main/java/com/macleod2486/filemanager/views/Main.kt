@@ -58,8 +58,6 @@ class Main : Fragment()
 
     private fun updateView()
     {
-        var button: Button
-
         gridLayout.removeAllViews()
 
         if(File(currentRoot).isDirectory)
@@ -71,7 +69,7 @@ class Main : Fragment()
 
             for(file in listOfFiles!!)
             {
-                button = Button(activity?.applicationContext)
+                var button = Button(activity?.applicationContext)
                 button.setText(file.name)
                 button.width = 300
 
@@ -81,9 +79,7 @@ class Main : Fragment()
                     button.setBackgroundColor(resources.getColor(android.R.color.holo_red_dark))
 
                 button.setOnClickListener{
-                    val button: Button? = it as Button?
-
-                    val path = currentRoot+"/"+button!!.text
+                    val path = currentRoot+"/"+button.text
                     if(File(path).isDirectory)
                     {
                         currentRoot += "/"+button.text
